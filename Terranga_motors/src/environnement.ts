@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,
-  apiUrl: 'https://teranga-motors-backend.onrender.com',
+  production: true, // Passe à true si tu es en train de déployer
+  apiUrl: 'https://teranga-motors-backend.onrender.com/api',
 };
