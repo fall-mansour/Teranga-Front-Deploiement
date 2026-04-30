@@ -1,0 +1,84 @@
+
+<div class="demande-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2>Faites une demande de pièce 🛠️</h2>
+      <p> Dites-nous ce qu'il vous faut et notre équipe s'en occupe.</p>
+      <p>Akh Teranga motors weur ba soon Diekhna !!!</p>
+    </div>
+
+    <form (ngSubmit)="onSendDemande()" #demandeForm="ngForm">
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Marque du véhicule</label>
+          <select [(ngModel)]="demande.marque" name="marque" (change)="onMarqueChange()" required #marque="ngModel">
+            <option value="">Choisir une marque</option>
+            <option *ngFor="let m of marques" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Modèle</label>
+          <select [(ngModel)]="demande.modele" name="modele" [disabled]="!demande.marque" required>
+            <option value="">{{ demande.marque ? 'Choisir un modèle' : 'Sélectionnez une marque' }}</option>
+            <option *ngFor="let mod of modelesFiltr" [value]="mod">{{ mod }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Année</label>
+          <select [(ngModel)]="demande.annee" name="annee" required>
+            <option value="">Année du véhicule</option>
+            <option *ngFor="let year of [2026,2025,2024,2023,2022,2021,2020,2019,2018]" [value]="year">{{year}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group full-width">
+        <label>Description de la pièce recherchée</label>
+        <textarea
+          [(ngModel)]="demande.description"
+          name="description"
+          rows="5"
+          placeholder="Ex: Phare avant gauche pour Peugeot 308 avec option LED..."
+          required
+          minlength="10">
+        </textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="!demandeForm.form.valid || isLoading" class="btn-submit">
+          <span *ngIf="!isLoading">Envoyer la demande</span>
+          <span *ngIf="isLoading">Envoi en cours...</span>
+        </button>
+      </div>
+
+      <div class="alert success" *ngIf="successMessage">{{ successMessage }}</div>
+      <div class="alert error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    </form>
+  </div>
+</div>
+
+<div class="message-container">
+
+  <div class="alert-box success" *ngIf="successMessage">
+    <div class="icon">✅</div>
+    <div class="content">
+      <p><strong>Succès !</strong></p>
+      <p>Merci, votre demande a été envoyée avec succès à l'équipe.</p>
+    </div>
+    <button (click)="successMessage = ''" class="close-btn">&times;</button>
+  </div>
+
+  <div class="alert-box error" *ngIf="errorMessage">
+    <div class="icon">❌</div>
+    <div class="content">
+      <p><strong>Erreur</strong></p>
+      <p>L'envoi a échoué. Veuillez vérifier votre connexion ou réessayer plus tard.</p>
+    </div>
+    <button (click)="errorMessage = ''" class="close-btn">&times;</button>
+  </div>
+
+</div>

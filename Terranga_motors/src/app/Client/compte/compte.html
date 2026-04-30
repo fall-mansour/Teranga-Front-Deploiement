@@ -1,0 +1,123 @@
+<div class="form-container">
+  <form (ngSubmit)="creerCompte()" #compteForm="ngForm" novalidate>
+
+    <h2 class="header">INSCRIPTION⚙️</h2>
+    <p class="subtitle">Rejoignez Teranga Motors pour gérer vos pièces et votre véhicule.</p>
+
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="Prénom"
+        [(ngModel)]="prenom"
+        name="prenom"
+        #prenomCtrl="ngModel"
+        required
+      />
+      <div *ngIf="prenomCtrl.invalid && (prenomCtrl.dirty || prenomCtrl.touched)" class="error">
+        <small>Le prénom est requis.</small>
+      </div>
+
+      <input
+        type="text"
+        placeholder="Nom"
+        [(ngModel)]="nom"
+        name="nom"
+        #nomCtrl="ngModel"
+        required
+      />
+      <div *ngIf="nomCtrl.invalid && (nomCtrl.dirty || nomCtrl.touched)" class="error">
+        <small>Le nom est requis.</small>
+      </div>
+    </div>
+
+    <div class="vehicle-info">
+      <select class="select" [(ngModel)]="marque_vehicule" name="marque_vehicule" #marqueCtrl="ngModel" required>
+        <option value="" disabled selected>Marque du véhicule</option>
+        <option value="Peugeot">Peugeot</option>
+        <option value="Renault">Renault</option>
+        <option value="Dacia">Dacia</option>
+        <option value="Citroën">Citroën</option>
+        <option value="Toyota">Toyota</option>
+        <option value="BMW">BMW</option>
+        <option value="Mercedes">Mercedes</option>
+        <option value="Volkswagen">Volkswagen</option>
+        <option value="Hyundai">Hyundai</option>
+        <option value="Kia">Kia</option>
+      </select>
+
+      <input
+        type="text"
+        placeholder="Modèle (ex: Golf 7, Tucson...)"
+        [(ngModel)]="modele_vehicule"
+        name="modele_vehicule"
+        #modeleCtrl="ngModel"
+        required
+      />
+
+      <select class="select" [(ngModel)]="annee" name="annee" #anneeCtrl="ngModel" required>
+        <option value="" disabled selected>Année</option>
+        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+      </select>
+    </div>
+
+    <input
+      type="email"
+      placeholder="Adresse Email (mail)"
+      [(ngModel)]="mail"
+      name="mail"
+      #mailCtrl="ngModel"
+      required
+      email
+    />
+    <div *ngIf="mailCtrl.invalid && (mailCtrl.dirty || mailCtrl.touched)" class="error">
+      <small *ngIf="mailCtrl.errors?.['required']">L'email est requis pour la connexion.</small>
+      <small *ngIf="mailCtrl.errors?.['email']">Format d'email invalide.</small>
+    </div>
+
+    <input
+      type="tel"
+      placeholder="Téléphone (ex: 771234567)"
+      [(ngModel)]="telephone"
+      name="telephone"
+      pattern="[0-9]{9}"
+    />
+
+    <input
+      type="text"
+      placeholder="Adresse (Quartier, Ville)"
+      [(ngModel)]="adresse"
+      name="adresse"
+    />
+
+    <input
+      type="password"
+      placeholder="Mot de passe (6 caractères min)"
+      [(ngModel)]="password"
+      name="password"
+      #passwordCtrl="ngModel"
+      required
+      minlength="6"
+    />
+    <div *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)" class="error">
+      <small *ngIf="passwordCtrl.errors?.['minlength']">Le mot de passe doit faire au moins 6 caractères.</small>
+    </div>
+
+    <div class="actions">
+      <input
+        type="submit"
+        [disabled]="!compteForm.form.valid || isLoading"
+        [value]="isLoading ? 'Traitement en cours...' : 'Créer mon compte'"
+      />
+    </div>
+
+    <div *ngIf="successMessage" class="success-box">
+      <p>✅ {{ successMessage }}</p>
+      <small>Patientez, nous vous redirigeons...</small>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-box">
+      <p>❌ {{ errorMessage }}</p>
+    </div>
+
+  </form>
+</div>

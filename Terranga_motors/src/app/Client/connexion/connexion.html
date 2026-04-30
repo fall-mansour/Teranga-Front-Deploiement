@@ -1,0 +1,59 @@
+
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" novalidate>
+
+    <h2>CONNEXION 👤</h2>
+    <h2><img src="/assets/logo.jpeg" height="100px"></h2>
+
+    <!-- Email -->
+    <input
+      type="email"
+      placeholder="Email"
+      [(ngModel)]="email"
+      name="email"
+      #emailCtrl="ngModel"
+      required
+      email
+    />
+    <div class="error" *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)">
+      <small>Email invalide</small>
+    </div>
+
+    <!-- Mot de passe -->
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      [(ngModel)]="password"
+      name="password"
+      #passwordCtrl="ngModel"
+      required
+    />
+    <div class="error" *ngIf="passwordCtrl.invalid && (passwordCtrl.dirty || passwordCtrl.touched)">
+      <small>Mot de passe requis (6 caractères min)</small>
+    </div>
+
+    <!-- Bouton -->
+    <input
+      type="submit"
+      [disabled]="!loginForm.form.valid || isLoading"
+      [value]="isLoading ? 'Connexion...' : 'Se connecter'"
+    />
+
+    <!-- Message de succès (VERT) -->
+    <div class="success" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <!-- Message d'erreur (ROUGE) -->
+    <div class="error-global" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Liens -->
+    <div class="compte">
+      <p>Pas encore de compte ? <a routerLink="/compte">S'inscrire</a></p>
+      <p><a routerLink="/password">Mot de passe oublié ?</a></p>
+    </div>
+
+  </form>
+</div>

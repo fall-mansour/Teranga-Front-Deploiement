@@ -1,0 +1,72 @@
+<div class="container">
+  <h2><img src="/assets/logo.jpeg" height="100px" width="200px"></h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <input type="text" name="description" [(ngModel)]="pieceData.description" placeholder="Description" class="full-width" required />
+    <select name="categorie" [(ngModel)]="pieceData.categorie" class="full-width">
+      <option value="" disabled>Catégorie</option>
+      <option value="moteur">Moteur</option>
+      <option value="freinage">Freinage</option>
+      <option value="suspension">Suspension</option>
+      <option value="transmission">Transmission</option>
+      <option value="electronique">Électronique</option>
+      <option value="carrosserie">Carrosserie</option>
+
+    </select>
+    <select name="marque" [(ngModel)]="pieceData.marque">
+      <option value="" disabled >Marques</option>
+      <option value="Peugeot">Peugeot</option>
+      <option value="Renault">Renault</option>
+      <option value="Toyota">Toyota</option>
+      <option value="Citroën">Citroën</option>
+      <option value="Volkswagen">Volkswagen</option>
+      <option value="Dacia">Dacia</option>
+      <option value="Ford">Ford</option>
+      <option value="Nissan">Nissan</option>
+      <option value="Hyundai">Hyundai</option>
+      <option value="Kia">Kia</option>
+      <option value="Mitshubishi">Mitshubishi</option>
+      <option value="Suzuki">Suzuki</option>
+      <option value="Chevrolet">Chevrolet</option>
+      <option value="Dodge">Dodge</option>
+      <option value="Volvo">Volvo</option>
+      <option value="Fiat">Fiat</option>
+      <option value="Jetour">Jetour</option>
+      <option value="BYD">BYD</option>
+      <option value="Tesla">Tesla</option>
+
+    </select>
+    <input type="text" name="modele" [(ngModel)]="pieceData.modele" placeholder="Modèle" />
+
+    <select name="annee" [(ngModel)]="pieceData.annee">
+      <option value="" disabled >Années</option>
+      <option *ngFor="let year of [2025,2024,2023,2022,2021,2020]" [value]="year">{{year}}</option>
+    </select>
+
+    <select name="etat" [(ngModel)]="pieceData.etat">
+      <option value="" disabled>Etat</option>
+      <option *ngFor="let etat of ['Neuf', 'Occasion']" [value]="etat">{{etat}}</option>
+    </select>
+
+    <input type="number" name="prix" [(ngModel)]="pieceData.prix" placeholder="Prix" />
+    <input type="number" name="quantite" [(ngModel)]="pieceData.quantite" placeholder="Quantité" />
+    <input type="text" name="fournisseur" [(ngModel)]="pieceData.fournisseur" placeholder="Fournisseur" />
+
+    <hr>
+    <div class="upload-section">
+      <h3>Photos de la pièce</h3>
+      <div class="field">
+        <label>Image Principale</label>
+        <input type="file" (change)="onFileSelect($event, 'img_principale')" accept="image/*" />
+      </div>
+      <div class="grid-images">
+        <div class="field" *ngFor="let i of [1,2,3,4]">
+          <label>Image {{i}}</label>
+          <input type="file" (change)="onFileSelect($event, 'img' + i)" accept="image/*" />
+        </div>
+      </div>
+    </div>
+
+    <button type="submit">Ajouter la Pièce</button>
+  </form>
+</div>

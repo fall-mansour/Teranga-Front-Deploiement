@@ -1,0 +1,247 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <img src="assets/logo.jpeg" alt="Logo" class="logo" />
+    <span class="brand-name">Le coin des mécanos⚙️</span>
+  </div>
+
+  <div class="header-search">
+    <i class="fas fa-search search-icon"></i>
+    <input
+      type="search"
+      placeholder="Rechercher une pièce, marque, modèle..."
+      [(ngModel)]="searchText"
+    />
+  </div>
+
+  <div class="header-right">
+    <a class="btn-connexion" routerLink="/login">
+      <i class="fas fa-user"></i>
+      <span>Connexion</span>
+    </a>
+    <button class="btn-panier">
+      <i class="fas fa-shopping-cart"></i>
+    </button>
+  </div>
+</header>
+
+<!-- HERO BANNER -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Trouvez la pièce qu'il vous faut</h1>
+    <p>Des milliers de pièces détachées pour tous vos véhicules</p>
+  </div>
+</section>
+
+<!-- FILTRES -->
+<section class="filters-section">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label><i class="fas fa-car"></i> Marque</label>
+      <select [(ngModel)]="selectedMarque" name="marque" (change)="onMarqueChange()">
+        <option value="">Toutes les Marques</option>
+        <option *ngFor="let m of marques" [value]="m">{{ m }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label><i class="fas fa-cogs"></i> Modèle</label>
+      <select [(ngModel)]="selectedModele" name="modele" [disabled]="!selectedMarque">
+        <option value="">Sélectionner Modèle</option>
+        <option *ngFor="let mod of modelesFiltr" [value]="mod">{{ mod }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label><i class="fas fa-calendar-alt"></i> Année</label>
+      <select [(ngModel)]="selectedAnnee" name="annee">
+        <option value="">Toutes les Années</option>
+        <option *ngFor="let year of [2026, 2025, 2024, 2023, 2022, 2021, 2020]" [value]="year">
+          {{ year }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label><i class="fas fa-edit"></i> Recherche manuelle</label>
+      <input
+        type="text"
+        placeholder="Taper un modèle..."
+        [(ngModel)]="selectedModele"
+        name="modele_manual"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label><i class="fas fa-th-large"></i> Catégorie</label>
+      <select name="categorie">
+        <option value="" disabled selected>Catégorie Pièces</option>
+        <option value="moteur">Motorisation</option>
+        <option value="freinage">Freinage</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOGUE -->
+<section class="catalogue">
+  <h2 class="section-title">
+    <span>Nos Pièces Disponibles</span>
+    <small>{{ filteredPieces.length }} résultat(s)</small>
+  </h2>
+
+  <div class="cards-grid">
+    <div class="card" *ngFor="let piece of filteredPieces">
+      <div class="card-image">
+        <img
+          [src]="piece.img_url"
+          [alt]="piece.marque + ' ' + piece.modele"
+          (error)="piece.img_url = 'assets/placeholder.jpg'"
+        />
+
+        <span
+          class="badge-etat"
+          [ngClass]="{ neuf: piece.etat === 'Neuf', occasion: piece.etat !== 'Neuf' }"
+        >
+          {{ piece.etat }}
+        </span>
+      </div>
+      <div class="card-body">
+        <h3>{{ piece.marque }} {{ piece.modele }}</h3>
+        <p class="description">{{ piece.description }}</p>
+        <div class="card-meta">
+          <span><i class="fas fa-calendar"></i> {{ piece.annee }}</span>
+          <span><i class="fas fa-truck"></i> {{ piece.fournisseur }}</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">{{ piece.prix | currency: 'XOF' : 'symbol' : '1.0-0' }}</div>
+
+          <button class="btn-details" (click)="openDetails(piece)">
+            Voir <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-result" *ngIf="filteredPieces.length === 0">
+    <i class="fas fa-search fa-3x"></i>
+    <p>Aucune pièce ne correspond à vos critères.</p>
+    <small>Essayez de modifier vos filtres ou votre recherche.</small>
+  </div>
+</section>
+
+<div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="showModal = false">&#x2715;</button>
+
+    <div class="modal-body">
+      <!-- ── Galerie ── -->
+      <div class="gallery-section">
+        <div class="main-display" [class.zoomed]="isZoomed" (click)="isZoomed = !isZoomed">
+          <img [src]="getFullImageUrl(galleryImages[currentIndex])" alt="Pièce" />
+          <div class="zoom-hint">&#x2315; cliquer pour zoomer</div>
+        </div>
+
+        <div class="nav-row">
+          <button class="nav-btn" (click)="prevImage(); $event.stopPropagation()">&#10094;</button>
+          <span class="counter">{{ currentIndex + 1 }} / {{ galleryImages.length }}</span>
+          <button class="nav-btn" (click)="nextImage(); $event.stopPropagation()">&#10095;</button>
+        </div>
+
+        <div class="thumbnails">
+          <div
+            class="thumb"
+            *ngFor="let img of galleryImages; let i = index"
+            [class.active]="i === currentIndex"
+            (click)="currentIndex = i; $event.stopPropagation()"
+          >
+            <img [src]="getFullImageUrl(img)" alt="" />
+          </div>
+        </div>
+      </div>
+
+      <!---Onglet JS-->
+      <!-- ── Infos produit ── -->
+      <div class="info-section">
+        <div class="badge">&#9670; Pièces détachées</div>
+
+        <h2 class="title">{{ selectedPiece?.marque }}<br />{{ selectedPiece?.modele }}</h2>
+        <p class="subtitle">
+          {{ selectedPiece?.categorie }} &nbsp;|&nbsp; {{ selectedPiece?.annee }}
+        </p>
+
+        <div class="price-block">
+          <span class="price-label">Prix</span>
+          <span class="price-value">{{
+            selectedPiece?.prix | currency: 'XOF' : 'symbol' : '1.0-0'
+          }}</span>
+        </div>
+
+        <div class="desc-block">
+          <p class="desc-label">Description</p>
+          <p class="desc-text">{{ selectedPiece?.description }}</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="stock-row">
+          <div class="stock-dot" [class.out]="(selectedPiece?.quantite ?? 0) <= 0"></div>
+          <span class="stock-label">Disponibilité :</span>
+          <span class="stock-status" [class.rupture]="(selectedPiece?.quantite ?? 0) <= 0">
+            {{ (selectedPiece?.quantite ?? 0) > 0 ? 'En stock' : 'Rupture de stock' }}
+          </span>
+        </div>
+
+        <button class="btn-cart" [disabled]="(selectedPiece?.quantite ?? 0) <= 0">
+          <span class="cart-icon">&#128722;</span>
+          Ajouter au panier
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-col footer-brand">
+      <img src="assets/logo.jpeg" alt="Logo" class="footer-logo" />
+      <h4>Akh Teranga_motors</h4>
+      <p class="slogan">Weur ba soon diekhna !!!</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><i class="fas fa-envelope"></i> teranga_auto&#64;mecaequip.sn</li>
+        <li><i class="fas fa-phone"></i> +221 77 649 05 36</li>
+        <li><i class="fas fa-map-marker-alt"></i> Rufisque, Rue Ousane Soce Diop</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Besoin d'aide ?</h4>
+      <p>Vous ne trouvez pas la pièce recherchée ?</p>
+      <a routerLink="/demande" class="btn-demande">
+        <i class="fas fa-paper-plane"></i> Demander une pièce
+      </a>
+    </div>
+
+    <div class="footer-col footer-slideshow">
+      <div class="slideshow-container">
+        <div class="slideshow"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 MecaEquip - Tous droits réservés.</p>
+  </div>
+</footer>

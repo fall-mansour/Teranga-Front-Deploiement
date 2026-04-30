@@ -1,0 +1,73 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <nav class="admin-nav">
+      <div class="nav-brand">DASHBOARD TERANGA MOTORS ⚙️</div>
+      <div class="nav-links">
+        <a href="/ajoutpieces">Ajout pièces</a>
+        <a href="/stock">Gestion du stock</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="dashboard-content" *ngIf="stats; else loading">
+    <div class="top-stats-grid">
+      <div class="glass-card total-card">
+        <div class="card-body">
+          <span class="label">Nombre total de pièces</span>
+          <h1 class="value">{{ stats.total }}</h1>
+          <div class="progress-container">
+             <div class="progress-bar-subtle" style="width: 100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card chart-card">
+        <div class="donut-wrapper">
+          <div class="donut-chart" [style.background]="getDonutStyle()">
+            <div class="donut-hole"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="details-section">
+      <div class="stat-group">
+        <div class="stat-item">
+          <span class="item-label">Motorisation</span>
+          <div class="track"><div class="fill green" [style.width]="getPercentage(stats.motorisation)"></div></div>
+          <span class="item-value">{{ stats.motorisation }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="item-label">Transmission</span>
+          <div class="track"><div class="fill blue" [style.width]="getPercentage(stats.transmission)"></div></div>
+          <span class="item-value">{{ stats.transmission }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="item-label">Freinage</span>
+          <div class="track"><div class="fill red" [style.width]="getPercentage(stats.freinage)"></div></div>
+          <span class="item-value">{{ stats.freinage }}</span>
+        </div>
+
+
+
+        <div class="stat-item">
+          <span class="item-label">Carrosserie</span>
+          <div class="track"><div class="fill yellow" [style.width]="getPercentage(stats.carrosserie)"></div></div>
+          <span class="item-value">{{ stats.carrosserie }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="item-label">Électronique</span>
+          <div class="track"><div class="fill purple" [style.width]="getPercentage(stats.electronique)"></div></div>
+          <span class="item-value">{{ stats.electronique }}</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <ng-template #loading>
+    <div class="loader">Chargement des données...</div>
+  </ng-template>
+</div>

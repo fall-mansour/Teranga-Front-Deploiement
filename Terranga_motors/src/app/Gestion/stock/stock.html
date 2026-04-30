@@ -1,0 +1,89 @@
+<header class="entete">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <img src="/assets/logo.jpeg" alt="Logo" class="logo" height="60px" />
+  <h1>TERANGA MOTORS ⚙️</h1>
+
+  <input type="search" class='barre' placeholder="🔎 Rechercher..." [(ngModel)]="searchText" />
+</header>
+
+<form class="form-pieces">
+  <select [(ngModel)]="selectedMarque" name="marque">
+    <option value=""> Marques</option>
+    <option value="Peugeot">Peugeot</option>
+    <option value="Renault">Renault</option>
+    <option value="Toyota">Toyota</option>
+    <option value="Citroën">Citroën</option>
+    <option value="Volkswagen">Volkswagen</option>
+     <option value="Dacia">Dacia</option>
+      <option value="Ford">Ford</option>
+      <option value="Nissan">Nissan</option>
+      <option value="Hyundai">Hyundai</option>
+      <option value="Kia">Kia</option>
+      <option value="Mitshubishi">Mitshubishi</option>
+      <option value="Suzuki">Suzuki</option>
+      <option value="Chevrolet">Chevrolet</option>
+      <option value="Dodge">Dodge</option>
+      <option value="Volvo">Volvo</option>
+      <option value="Fiat">Fiat</option>
+      <option value="Jetour">Jetour</option>
+      <option value="BYD">BYD</option>
+      <option value="Tesla">Tesla</option>
+
+  </select>
+
+  <select [(ngModel)]="selectedAnnee" name="annee">
+    <option value=""> Années</option>
+    <option *ngFor="let year of [2025,2024,2023,2022,2021,2020]" [value]="year">{{year}}</option>
+  </select>
+
+  <input type="text" placeholder="Modèle spécifique" [(ngModel)]="selectedModele" name="modele" />
+
+  <select name="categorie" [(ngModel)]="selectedCategorie" name="categorie">
+    <option value="" disabled selected>Catégorie Pièces</option>
+    <option value="Motorisation">Motorisation</option>
+    <option value="Freinage">Freinage</option>
+    <option value="Suspension">Suspension</option>
+    <option value="Transmission">Transmission</option>
+    <option value="Électronique">Électronique</option>
+  </select>
+</form>
+
+<div class="container">
+  <div class="card" *ngFor="let piece of filteredPieces">
+
+    <img
+      [src]="piece.img"
+      [alt]="piece.marque + ' ' + piece.modele"
+
+    />
+
+    <div class="card-body">
+
+
+      <h3>{{ piece.marque }} {{ piece.modele }}</h3>
+
+      <p>{{ piece.description }}</p>
+
+      <p>Quantité : <strong>{{ piece.quantite }}</strong></p>
+
+      <div class="details">
+        <p> Année : {{ piece.annee }}</p>
+        <p>Fournisseur : {{ piece.fournisseur }}</p>
+      </div>
+
+      <div class="etat">
+        <p>État : {{ piece.etat }}</p>
+      </div>
+
+      <div class="price">
+        {{ piece.prix | currency: 'XOF' :'symbol':'1.0-0' }}
+      </div>
+
+      <button (click)="supprimerPiece(piece._id || piece.id)">Retirer ❌</button>
+    </div>
+  </div>
+
+  <p class="no-result" *ngIf="filteredPieces.length === 0">
+    ❌ Aucune pièce ne correspond à vos critères de recherche.
+  </p>
+</div>
