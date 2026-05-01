@@ -99,11 +99,11 @@
   <div class="cards-grid">
     <div class="card" *ngFor="let piece of filteredPieces">
       <div class="card-image">
-        <img
-          [src]="piece.img_url"
-          [alt]="piece.marque + ' ' + piece.modele"
-          (error)="piece.img_url = 'assets/placeholder.jpg'"
-        />
+       <img 
+  [src]="piece.img_url" 
+  [alt]="piece.marque"
+  (error)="piece.img_url = 'assets/placeholder.jpg'"
+>
 
         <span
           class="badge-etat"
