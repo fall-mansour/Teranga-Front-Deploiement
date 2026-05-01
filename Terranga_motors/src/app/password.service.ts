@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environnement'; // ✅ Chemin à vérifier selon ton arborescence
+import { environment } from './environnement'; // ✅ Chemin à vérifier selon ton arborescence
 
 @Injectable({ providedIn: 'root' })
 export class PasswordService {
