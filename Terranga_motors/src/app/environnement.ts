@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api' // ✅ Doit correspondre à votre backend
+  apiUrl: 'https://teranga-backend-jui8.onrender.com' // ✅ Doit correspondre à votre backend
 };
