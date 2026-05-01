@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environnement'; // ✅ Vérifie bien le nombre de '../' selon ton dossier
+import { environment } from './environnement'; // ✅ Vérifie bien le nombre de '../' selon ton dossier
 
 export interface StatsPieces {
   total: number;
