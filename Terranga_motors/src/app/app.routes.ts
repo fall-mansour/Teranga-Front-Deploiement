@@ -11,7 +11,7 @@ import { PasswordComponent } from './Client/password/password';
 import { DemandeComponent } from './Client/demande/demande';
 
 export const routes: Routes = [
-  { path: 'Dashboard', component: Dashboard },
+  { path: 'dashboard', component: Dashboard },
   { path: 'ajoutpieces', component: Ajoutpieces },
   { path: 'stock', component: Stock },
 
