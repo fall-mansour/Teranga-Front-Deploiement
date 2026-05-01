@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environnement';
+import { environment } from './environnement';
 
 export interface Piece {
   id?: number;
