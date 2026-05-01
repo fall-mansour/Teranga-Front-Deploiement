@@ -1,18 +1,18 @@
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'; // Import important
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'; // 1. Import de l'environnement
 
 export interface Piecegestion {
-  _id?: string; // MongoDB utilise _id par défaut
-  id?: number;  // Gardé pour la compatibilité avec ton code actuel
+  _id?: string;
+  id?: number; 
   marque: string;
   modele: string;
   description: string;
   prix: number;
   quantite: number;
   annee: number;
-  img: string; // Contiendra le chemin de l'image principale uploadée
+  img: string; 
   fournisseur?: string;
   etat?: string;
   categorie?: string;
@@ -22,8 +22,8 @@ export interface Piecegestion {
   providedIn: 'root'
 })
 export class PiecesServicegestion {
-  // L'URL de ton futur API Node.js
-  private apiUrl = 'http://localhost:3000/api/stock';
+  // 2. Utilisation dynamique de l'URL via l'environnement
+  private apiUrl = `${environment.apiUrl}/pieces`; 
 
   constructor(private http: HttpClient) {}
 
@@ -37,7 +37,7 @@ export class PiecesServicegestion {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  // Optionnel : Récupérer une seule pièce
+  // Récupérer une seule pièce
   getPieceById(id: string): Observable<Piecegestion> {
     return this.http.get<Piecegestion>(`${this.apiUrl}/${id}`);
   }
