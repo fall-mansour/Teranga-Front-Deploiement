@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from './environment'; // 1. Import de l'environnement
+import { environment } from './environnement'; // 1. Import de l'environnement
 
 export interface Piecegestion {
   _id?: string;
